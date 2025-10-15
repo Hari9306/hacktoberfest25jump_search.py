@@ -5,18 +5,20 @@ def jump_search(arr, target):
     step = int(math.sqrt(n))
     prev = 0
 
-    while arr[min(step, n)] < target:  # ❌ May go out of range
+    # ✅ Fix: use min(step, n) - 1 to prevent IndexError
+    while prev < n and arr[min(step, n) - 1] < target:
         prev = step
         step += int(math.sqrt(n))
         if prev >= n:
             return -1
 
-    while arr[prev] < target:
+    while prev < n and arr[prev] < target:
         prev += 1
         if prev == min(step, n):
             return -1
-    if arr[prev] == target:
+
+    if prev < n and arr[prev] == target:
         return prev
     return -1
 
-print(jump_search([1, 3, 5, 7, 9, 11, 13], 9))  # Expected 4
+print(jump_search([1, 3, 5, 7, 9, 11, 13], 9))
